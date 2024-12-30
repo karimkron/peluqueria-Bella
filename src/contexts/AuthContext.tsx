@@ -27,13 +27,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading] = useState(false);
 
   const login = async (email: string, password: string) => {
-    if (email === 'karim@gmail.com' && password === 'kroonox361') {
-      setUser({ email });
-      toast.success('Inicio de sesión exitoso');
-    } else {
-      toast.error('Credenciales incorrectas');
-      throw new Error('Invalid credentials');
-    }
+    if (email === import.meta.env.VITE_ADMIN_EMAIL && 
+      password === import.meta.env.VITE_ADMIN_PASSWORD) {
+    setUser({ email });
+    toast.success('Inicio de sesión exitoso');
+  } else {
+    toast.error('Credenciales incorrectas');
+    throw new Error('Invalid credentials');
+  }
   };
 
   const logout = async () => {
