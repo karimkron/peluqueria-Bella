@@ -69,15 +69,25 @@ export const api = {
   },
 
   async addGalleryImage(formData: FormData) {
-    const res = await fetch(`${API_URL}/gallery`, {
-      method: "POST",
-      body: formData,
-    });
-    if (!res.ok) {
-      const errorData = await res.json();
-      throw new Error(errorData.message || "Error al subir la imagen");
+    try {
+      console.log("Enviando solicitud al servidor...");
+      const res = await fetch(`${API_URL}/gallery`, {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.error("Error del servidor:", data);
+        throw new Error(data.message || "Error al subir la imagen");
+      }
+
+      return data;
+    } catch (error) {
+      console.error("Error en addGalleryImage:", error);
+      throw error;
     }
-    return res.json();
   },
 
   async deleteGalleryImage(id: string) {

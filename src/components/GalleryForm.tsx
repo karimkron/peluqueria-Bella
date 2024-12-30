@@ -36,16 +36,24 @@ export function GalleryForm({ onSuccess, onCancel }: GalleryFormProps) {
 
     setUploading(true);
     try {
+      console.log("Preparando archivo para subir:", {
+        name: selectedFile.name,
+        size: selectedFile.size,
+        type: selectedFile.type,
+      });
+
       const formData = new FormData();
       formData.append("image", selectedFile);
       formData.append("description", description);
 
-      await api.addGalleryImage(formData);
+      const response = await api.addGalleryImage(formData);
+      console.log("Respuesta del servidor:", response);
+
       toast.success("Imagen subida correctamente");
       onSuccess();
     } catch (error) {
-      console.error("Error uploading image:", error);
-      toast.error("Error al subir la imagen");
+      console.error("Error completo:", error);
+      toast.error("Error al subir la imagen: " + (error as Error).message);
     } finally {
       setUploading(false);
     }

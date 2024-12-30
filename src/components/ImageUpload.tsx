@@ -27,12 +27,16 @@ export function ImageUpload({
           );
           return;
         }
+        console.log("Archivo seleccionado:", {
+          name: file.name,
+          size: file.size,
+          type: file.type,
+        });
         onImageSelect(file);
       }
     },
     [onImageSelect, maxSize]
   );
-
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
