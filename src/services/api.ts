@@ -1,4 +1,4 @@
-const API_URL = "https://peluqueria-bella-api.onrender.com";
+const API_URL = "https://peluqueria-bella-api.onrender.com/api";
 
 export const api = {
   // Servicios existentes para citas
