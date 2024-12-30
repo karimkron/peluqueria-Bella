@@ -5,6 +5,9 @@ const path = require("path");
 require("dotenv").config();
 const app = express();
 
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
+
 app.use(
   cors({
     origin: ["https://peluqueria-bella.onrender.com", "http://localhost:5173"],
@@ -12,6 +15,14 @@ app.use(
   })
 );
 app.use(express.json());
+
+// Middleware para errores
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res
+    .status(500)
+    .json({ message: err.message || "Error interno del servidor" });
+});
 
 // Servir archivos estáticos desde la carpeta uploads
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));

@@ -74,7 +74,8 @@ export const api = {
       body: formData,
     });
     if (!res.ok) {
-      throw new Error("Error al subir la imagen");
+      const errorData = await res.json();
+      throw new Error(errorData.message || "Error al subir la imagen");
     }
     return res.json();
   },

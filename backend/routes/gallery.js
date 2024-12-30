@@ -38,32 +38,49 @@ router.get("/", async (req, res) => {
 // Añadir nueva imagen
 router.post("/", upload.single("image"), async (req, res) => {
   try {
+    console.log("Iniciando subida de imagen");
+
     if (!req.file) {
+      console.log("No se recibió archivo");
       return res.status(400).json({ message: "No se subió ninguna imagen" });
     }
+
+    console.log("Archivo recibido:", {
+      mimetype: req.file.mimetype,
+      size: req.file.size,
+    });
 
     // Convertir el buffer a string base64
     const base64Data = req.file.buffer.toString("base64");
     const dataURI = `data:${req.file.mimetype};base64,${base64Data}`;
 
+    console.log("Intentando subir a Cloudinary...");
+
     // Subir a Cloudinary
     const result = await cloudinary.uploader.upload(dataURI, {
-      folder: "gallery", // Carpeta en Cloudinary
+      folder: "gallery",
       resource_type: "auto",
     });
+
+    console.log("Subida exitosa a Cloudinary:", result.secure_url);
 
     // Crear nuevo documento en la base de datos
     const image = new Gallery({
       url: result.secure_url,
-      description: req.body.description,
-      cloudinaryId: result.public_id, // Guardar el ID de Cloudinary
+      description: req.body.description || "",
+      cloudinaryId: result.public_id,
     });
 
     const newImage = await image.save();
+    console.log("Imagen guardada en base de datos");
+
     res.status(201).json(newImage);
   } catch (err) {
-    console.error("Error al subir imagen:", err);
-    res.status(400).json({ message: err.message });
+    console.error("Error detallado:", err);
+    res.status(400).json({
+      message: err.message,
+      details: err.toString(),
+    });
   }
 });
 
