@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 import { GalleryImage } from "../types";
 
@@ -61,7 +60,7 @@ export function GalleryGrid({ images = [], className = "" }: GalleryGridProps) {
           className="relative aspect-square overflow-hidden rounded-xl shadow-lg"
         >
           <img
-            src={`${API_BASE_URL}${image.url}`}
+            src={image.url}
             alt={image.description}
             className="absolute inset-0 w-full h-full object-cover"
           />

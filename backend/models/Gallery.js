@@ -4,6 +4,7 @@ const gallerySchema = new mongoose.Schema(
   {
     url: { type: String, required: true },
     description: { type: String, required: true },
+    cloudinaryId: { type: String, required: true },
   },
   { timestamps: true }
 );
